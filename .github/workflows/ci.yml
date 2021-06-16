@@ -43,7 +43,9 @@ jobs:
         uses: MilesChou/lua-action@v0.0.1
 
       - name: Check for lua
-        run: tree /usr/include
+        run: |
+          tree /usr/include
+          lua -v
       
       - run: ./scripts/autogen 
 
