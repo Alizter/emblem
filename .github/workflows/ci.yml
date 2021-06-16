@@ -33,7 +33,11 @@ jobs:
         run: |
           sudo wget -O /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/v4.9.6/yq_linux_amd64
           sudo chmod +x /usr/local/bin/yq
-    
+
+      # Install Lua
+      - name: Lua Action
+        uses: MilesChou/lua-action@v0.0.1
+        
       - run: ./scripts/autogen 
 
       - run: ./configure
