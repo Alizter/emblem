@@ -9,13 +9,13 @@ make -s ChangeLog
 make -s em
 make -s dist
 
-pkgname=$(yq -y .name em.yml | head -n 1)
-pkgver=$(yq -y .version em.yml | head -n 1)
+pkgname=$(./scripts/yq .name em.yml | head -n 1)
+pkgver=$(./scripts/yq .version em.yml | head -n 1)
 pkgsrc=$pkgname-$pkgver.tar.xz
 
 function deps()
 {
-	yq -y ".dist.aur[\"$1\"]" em.yml | cut -d' ' -f2- | xargs printf "'%s' " | grep -v "'\[]'" | sed 's/ $//'
+	./scripts/yq ".dist.aur[\"$1\"]" em.yml | cut -d' ' -f2- | xargs printf "'%s' " | grep -v "'\[]'" | sed 's/ $//'
 }
 
 # Generate PKGBUILD
@@ -23,7 +23,7 @@ m4 -PE - PKGBUILD.m4 > PKGBUILD << EOF
 m4_define(S_PKGNAME, $pkgname)m4_dnl
 m4_define(S_PKGVER, $pkgver)m4_dnl
 m4_define(S_SRC, $pkgsrc)m4_dnl
-m4_define(S_PKGDESC, \`$(yq -y .description em.yml | head -n 1)')m4_dnl
+m4_define(S_PKGDESC, \`$(./scripts/yq .description em.yml | head -n 1)')m4_dnl
 m4_define(S_DEPENDS, $(deps depends))m4_dnl
 m4_define(S_MAKEDEPENDS, $(deps make-depends))m4_dnl
 m4_define(S_CHECKDEPENDS, $(deps check-depends))m4_dnl

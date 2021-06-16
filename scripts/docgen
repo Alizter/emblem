@@ -3,7 +3,7 @@
 set -e
 
 mkdir -p ./docs/man/man1
-(./scripts/mangen | gzip - -) < em.yml > ./docs/man/man1/$(yq -y .program em.yml | head -n 1).1.gz
+(./scripts/mangen | gzip - -) < em.yml > ./docs/man/man1/$(./scripts/yq .program em.yml | head -n 1).1.gz
 
 doxygen ./docs/Doxyfile
 breathe-apidoc -fq -p emblem -o ./docs/rst/ ./docs/xml/

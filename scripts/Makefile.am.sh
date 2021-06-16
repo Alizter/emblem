@@ -11,10 +11,10 @@ tests=(${built_srcs[@]} ${parser_srcs[@]} $(echo ${hand_written_srcs[@]} | tr ' 
 scripts=($(find scripts -type f | grep -v '.*\.swp'))
 dist_data=($(find share/emblem/ -type f))
 
-deps_cflags=$(yq -y '.deps | map("$(" + .name + "_CFLAGS)")' em.yml | cut -d' ' -f2- | tr '\n' ' ' | sed 's/ $//')
-deps_libs=$(yq -y '.deps | map("$(" + .name + "_LIBS)")' em.yml | cut -d' ' -f2- | tr '\n' ' ' | sed 's/ $//')
-check_deps_cflags=$(yq -y '.check_deps | map("$(" + .name + "_CFLAGS)")' em.yml | cut -d' ' -f2- | tr '\n' ' ' | sed 's/ $//')
-check_deps_libs=$(yq -y '.check_deps | map("$(" + .name + "_LIBS)")' em.yml | cut -d' ' -f2- | tr '\n' ' ' | sed 's/ $//')
+deps_cflags=$(./scripts/yq '.deps[].name' em.yml | xargs printf ' $(%s_CFLAGS)' | cut -d' ' -f2- | tr '\n' ' ' | sed 's/ $//')
+deps_libs=$(./scripts/yq '.deps[].name' em.yml | xargs printf ' $(%s_LIBS)'| cut -d' ' -f2- | tr '\n' ' ' | sed 's/ $//')
+check_deps_cflags=$(./scripts/yq '.check_deps[].name' em.yml | xargs printf ' $(%s_CFLAGS)'| cut -d' ' -f2- | tr '\n' ' ' | sed 's/ $//')
+check_deps_libs=$(./scripts/yq '.check_deps[].name' em.yml | xargs printf ' $(%s_LIBS)'| cut -d' ' -f2- | tr '\n' ' ' | sed 's/ $//')
 
 lintable_srcs=($(./scripts/lintable-srcs.sh))
 

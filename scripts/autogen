@@ -22,9 +22,9 @@ rm -rf $(grep -v '^$' .gitignore | grep -v '^#')
 
 [[ "$c" -eq "0" ]] || exit 0
 
-pkg_name=$(yq -y .name em.yml | head -n 1)
-pkg_version=$(yq -y .version em.yml | head -n 1)
-pkg_bug_report_address=$(yq -y .bug_report_address em.yml | head -n 1)
+pkg_name=$(./scripts/yq .name em.yml | head -n 1)
+pkg_version=$(./scripts/yq .version em.yml | head -n 1)
+pkg_bug_report_address=$(./scripts/yq .bug_report_address em.yml | head -n 1)
 
 # Generate the new autotools files
 ./scripts/configure.scan.awk.sh < ./scripts/configure.scan.awk.in > ./scripts/configure.scan.awk

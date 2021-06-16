@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# Wrapper for different implementations of yq (yaml query language). Discerns
+# between kislyuk's and mikefarah's versions It doesn't change the query in any
+# way, it just hopes that the unsupported mikefarah one uses a syntax which is
+# similar enough to the kislyuk one
+
+if yq --help 2>&1 | grep kislyuk >/dev/null; then
+	yq=(yq -y)
+	yq_post=(cat -)
+else
+	yq=(yq eval)
+	yq_post=(grep -v "^\s*#")
+fi
+
+${yq[@]} "$@" | ${yq_post[@]} < /dev/stdin
